@@ -4,6 +4,10 @@ name: 'Assign me'
 on:
   pull_request:
 
+permissions:
+  pull-requests: write
+  issues: write
+
 jobs:
   set_assignee:
     runs-on: ubuntu-latest

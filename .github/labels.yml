@@ -1,4 +1,13 @@
 ---
+- name: 🚀 Feature
+  description: Feature added in the PR
+  color: F10505
+- name: 🕵🏻 Fix
+  description: Fix applied in the PR
+  color: F4D03F
+- name: ⚠️ Breaking Change
+  description: Breaking change in the PR
+  color: F1F800
 - name: 🤩 size/xs
   description: Pull request size XS
   color: 27AE60
