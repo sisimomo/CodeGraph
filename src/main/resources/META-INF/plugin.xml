@@ -5,14 +5,17 @@
     <vendor>sisimomo</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>  <!-- Java support added here -->
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
+    <resource-bundle>messages.CodeGraphBundle</resource-bundle>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.sisimomo.codegraph.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-    </extensions>
+    <actions>
+        <action id="com.github.sisimomo.codegraph.actions.ShowDependenciesAction"
+                class="com.github.sisimomo.codegraph.actions.ShowDependenciesAction"
+                text="Show Dependencies"
+                description="Display the dependency files (filtered by package) for the current Java file.">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt D"/>
+        </action>
+    </actions>
 
-    <applicationListeners>
-        <listener class="com.github.sisimomo.codegraph.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-    </applicationListeners>
 </idea-plugin>
