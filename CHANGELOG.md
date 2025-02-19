@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.1.0] - 2025-02-19
+
 ### Added
 
 - Support for selecting multiple Java files in IntelliJ IDEA project panel.
@@ -23,3 +25,7 @@
 - Initial version
 - Initial scaffold created
   from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
+
+[Unreleased]: https://github.com/sisimomo/CodeGraph/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/sisimomo/CodeGraph/compare/v0.0.1...v0.1.0
+[0.0.1]: https://github.com/sisimomo/CodeGraph/commits/v0.0.1
