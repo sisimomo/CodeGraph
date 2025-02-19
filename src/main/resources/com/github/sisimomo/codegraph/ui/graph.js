@@ -59,6 +59,14 @@ class GraphManager {
                 }
             },
             {
+                selector: 'node.root',
+                style: {
+                    'background-color': '#FFA500',
+                    'border-width': 3,
+                    'border-color': '#E67E00'
+                }
+            },
+            {
                 selector: '.node-disabled',
                 style: {
                     'background-color': '#B0BEC5',

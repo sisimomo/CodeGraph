@@ -21,7 +21,7 @@ import javax.swing.*
 
 class DependenciesDialog(
     project: Project,
-    private val rootFile: PsiJavaFile,
+    private val rootFiles: List<PsiJavaFile>,
     private val dependencyGraph: Map<PsiJavaFile, List<PsiJavaFile>>
 ) : DialogWrapper(project, false) {
 
@@ -38,13 +38,13 @@ class DependenciesDialog(
 
     init {
         init()
-        title = CodeGraphBundle.message("dialog.dependencies.title", rootFile.name)
-        isModal = false  // Ensure it's not always on top
+        title = CodeGraphBundle.message("dialog.dependencies.title", rootFiles.joinToString(", ") { it.name })
+        isModal = false
     }
 
     override fun show() {
         super.show()
-        restoreSizeAndPosition()  // Restore both size and position
+        restoreSizeAndPosition()
     }
 
     override fun dispose() {
@@ -57,8 +57,8 @@ class DependenciesDialog(
             val properties = PropertiesComponent.getInstance()
             properties.setValue(WIDTH_KEY, it.width, -1)
             properties.setValue(HEIGHT_KEY, it.height, -1)
-            properties.setValue(X_KEY, it.x, -1)  // Default X position
-            properties.setValue(Y_KEY, it.y, -1)  // Default Y position
+            properties.setValue(X_KEY, it.x, -1)
+            properties.setValue(Y_KEY, it.y, -1)
         }
     }
 
@@ -74,7 +74,7 @@ class DependenciesDialog(
                 window?.setSize(width, height)
             }
             if (x != -1 || y != -1) {
-                window?.setLocation(x, y)  // Restore window position
+                window?.setLocation(x, y)
             }
         }
     }
@@ -84,7 +84,6 @@ class DependenciesDialog(
         assignFileIds()
 
         val browser = JBCefBrowser()
-
         val jsQuery = getJBCefJSQuery(browser)
 
         browser.loadHTML(getHTML())
@@ -92,7 +91,6 @@ class DependenciesDialog(
         setupLoadHandler(browser, jsQuery)
 
         mainPanel.add(browser.component, BorderLayout.CENTER)
-
         return mainPanel
     }
 
@@ -107,7 +105,7 @@ class DependenciesDialog(
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            null  // Return value is not used.
+            null
         }
         return jsQuery
     }
@@ -116,7 +114,7 @@ class DependenciesDialog(
         var idCounter = 1
         fun getId(file: PsiJavaFile) = fileToId.getOrPut(file) { "node_${idCounter++}" }
 
-        getId(rootFile)
+        rootFiles.forEach(::getId)  // Assign IDs to all root files
         dependencyGraph.keys.forEach(::getId)
         dependencyGraph.values.flatten().forEach(::getId)
     }
@@ -128,10 +126,7 @@ class DependenciesDialog(
                     return
                 }
 
-                // Inject the graph data into JavaScript
                 executeJS(browser, "setGraphDataWhenReady('${getGraphJson()}');")
-
-                // Inject JS function to communicate with Java
                 executeJS(browser, "window.sendToJava = function(sendToJava) { ${jsQuery.inject("sendToJava")} };")
             }
         }
@@ -143,20 +138,26 @@ class DependenciesDialog(
         browser.executeJavaScript(script, browser.url, 0)
     }
 
+
     private fun getGraphJson(): String {
-        return objectMapper.writeValueAsString(
+        val nodes = fileToId.map { (file, id) ->
             mapOf(
-                "nodes" to fileToId.map { (file, id) -> mapOf("data" to mapOf("id" to id, "label" to file.name)) },
-                "edges" to dependencyGraph.flatMap { (fromFile, toList) ->
-                    val fromId = fileToId[fromFile] ?: return@flatMap emptyList()
-                    toList.mapNotNull { toFile ->
-                        fileToId[toFile]?.let { toId ->
-                            mapOf("data" to mapOf("id" to "edge_${fromId}_$toId", "source" to fromId, "target" to toId))
-                        }
+                "data" to mapOf("id" to id, "label" to file.name),
+                "classes" to if (file in rootFiles) "root" else ""
+            )
+        }
+
+        val edges = dependencyGraph.flatMap { (fromFile, toList) ->
+            fileToId[fromFile]?.let { fromId ->
+                toList.mapNotNull { toFile ->
+                    fileToId[toFile]?.let { toId ->
+                        mapOf("data" to mapOf("id" to "edge_${fromId}_$toId", "source" to fromId, "target" to toId))
                     }
                 }
-            )
-        )
+            } ?: emptyList()
+        }
+
+        return objectMapper.writeValueAsString(mapOf("nodes" to nodes, "edges" to edges))
     }
 
     override fun createActions(): Array<Action> = arrayOf(createConcatenateAction())
@@ -165,11 +166,11 @@ class DependenciesDialog(
         return object : DialogWrapperAction(CodeGraphBundle.message("button.concatenateToClipboard")) {
             override fun doAction(e: java.awt.event.ActionEvent?) {
                 copyConcatenatedFilesToClipboard()
-                close(OK_EXIT_CODE) // Optionally close the dialog
+                close(OK_EXIT_CODE)
             }
 
             init {
-                putValue(DEFAULT_ACTION, true) // Mark as primary action
+                putValue(DEFAULT_ACTION, true)
             }
         }
     }
