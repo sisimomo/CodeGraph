@@ -11,10 +11,9 @@
 
     <actions>
         <action id="com.github.sisimomo.codegraph.actions.ShowDependenciesAction"
-                class="com.github.sisimomo.codegraph.actions.ShowDependenciesAction"
-                text="Show Dependencies"
-                description="Display the dependency files (filtered by package) for the current Java file.">
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt D"/>
+                class="com.github.sisimomo.codegraph.actions.ShowDependenciesAction">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt G"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
     </actions>
 

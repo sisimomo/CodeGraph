@@ -12,14 +12,14 @@ visual representation of the dependencies, enabling users to explore and manipul
 
 ## Usage
 
-1. **Open a Java file** in IntelliJ IDEA.
-2. **Invoke the plugin** using the configured shortcut.
+1. **Select one or multiples Java file** in IntelliJ IDEA project side panel.
+2. **Invoke the plugin** using the configured shortcut (default <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>G</kbd>).
+    - Or use the Command Palette (Find Action, <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd>) then type <kbd>
+      CodeGraph - Show Dependencies</kbd>.
 3. **Enter an optional package filter** in the prompt.
 4. The **dependency graph is displayed** in a floating window.
 5. **Interact with the graph**:
-
-- Click nodes to enable/disable them to include/exclude files from concatenation.
-
+    - Click nodes to enable/disable them to include/exclude files from concatenation.
 6. Click **“Concatenate to Clipboard”** to copy the selected files’ content.
 7. **Paste the concatenated content** where needed (ChatGPT, Claude, Ollama, etc.).
 
