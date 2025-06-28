@@ -20,8 +20,14 @@ visual representation of the dependencies, enabling users to explore and manipul
 4. The **dependency graph is displayed** in a floating window.
 5. **Interact with the graph**:
     - Click nodes to enable/disable them to include/exclude files from concatenation.
-6. Click **“Concatenate to Clipboard”** to copy the selected files’ content.
-7. **Paste the concatenated content** where needed (ChatGPT, Claude, Ollama, etc.).
+6. **Choose how to share selected files:**
+    - **If your AI agent (e.g., Claude Code, GitHub Copilot Agent, Cursor, etc.) already has access to your files:**
+        - Click **“Copy AI Agent Context Prompt”** to copy a list of the selected files' paths. Paste this list into
+          your AI tool to provide context.
+    - **If your AI agent does NOT have access to your files:**
+        - Click **“Concatenate to Clipboard”** to copy the full content of the selected files. Paste this content into
+          your AI tool to provide full context.
+7. **Paste the concatenated content or prompt** where needed (ChatGPT, Claude, Ollama, etc.).
 
 <!-- Plugin description end -->
 

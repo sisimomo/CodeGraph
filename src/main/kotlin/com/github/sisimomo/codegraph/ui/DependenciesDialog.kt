@@ -17,10 +17,14 @@ import java.awt.BorderLayout
 import java.awt.datatransfer.StringSelection
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
-import javax.swing.*
+import java.nio.file.Paths
+import javax.swing.Action
+import javax.swing.JComponent
+import javax.swing.JPanel
+import javax.swing.SwingUtilities
 
 class DependenciesDialog(
-    project: Project,
+    private val project: Project,
     private val rootFiles: List<PsiJavaFile>,
     private val dependencyGraph: Map<PsiJavaFile, List<PsiJavaFile>>
 ) : DialogWrapper(project, false) {
@@ -160,7 +164,7 @@ class DependenciesDialog(
         return objectMapper.writeValueAsString(mapOf("nodes" to nodes, "edges" to edges))
     }
 
-    override fun createActions(): Array<Action> = arrayOf(createConcatenateAction())
+    override fun createActions(): Array<Action> = arrayOf(createConcatenateAction(), createAiPromptAction())
 
     private fun createConcatenateAction(): Action {
         return object : DialogWrapperAction(CodeGraphBundle.message("button.concatenateToClipboard")) {
@@ -175,12 +179,58 @@ class DependenciesDialog(
         }
     }
 
+    private fun createAiPromptAction(): Action {
+        return object : DialogWrapperAction(CodeGraphBundle.message("button.aiPromptToClipboard.label")) {
+            override fun doAction(e: java.awt.event.ActionEvent?) {
+                copyAiPromptToClipboard()
+                close(OK_EXIT_CODE)
+            }
+        }
+    }
+
     private fun copyConcatenatedFilesToClipboard() {
         val content = fileToId.entries
             .filterNot { disabledNodes.contains(it.value) }
-            .joinToString("\n\n") { (file, _) -> "// File: ${file.name}\n${file.text}" }
+            .joinToString("\n\n") { (file, _) -> "// File: ${getRelativePath(file)}\n${file.text}" }
 
         CopyPasteManager.getInstance().setContents(StringSelection(content))
+    }
+
+    private fun copyAiPromptToClipboard() {
+        val files = getEnabledFiles()
+        if (files.isEmpty()) return
+        val prompt = buildAiPrompt(files)
+        CopyPasteManager.getInstance().setContents(StringSelection(prompt.trim()))
+    }
+
+    private fun getEnabledFiles(): List<PsiJavaFile> {
+        return fileToId.entries
+            .filterNot { disabledNodes.contains(it.value) }
+            .map { it.key }
+    }
+
+    private fun buildAiPrompt(files: List<PsiJavaFile>): String {
+        return buildString {
+            appendLine(CodeGraphBundle.message("button.aiPromptToClipboard.prompt"))
+            files.forEach { file ->
+                appendLine("- ${getRelativePath(file)}")
+            }
+        }
+    }
+
+    private fun getRelativePath(file: PsiJavaFile): String {
+        val vFile = file.virtualFile
+        return vFile?.let {
+            project.basePath.let { base ->
+                try {
+                    val basePath = Paths.get(base)
+                    val filePath = Paths.get(it.path)
+                    basePath.relativize(filePath).toString()
+                } catch (_: IllegalArgumentException) {
+                    it.path
+                }
+            } ?: it.path
+        } ?: file.name
     }
 
     private fun getHTML(): String {
