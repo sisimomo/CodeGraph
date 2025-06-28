@@ -6,7 +6,7 @@ import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.ide.CopyPasteManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
-import com.intellij.psi.PsiJavaFile
+import com.intellij.psi.PsiFile
 import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.ui.jcef.JBCefBrowserBase
 import com.intellij.ui.jcef.JBCefJSQuery
@@ -25,12 +25,12 @@ import javax.swing.SwingUtilities
 
 class DependenciesDialog(
     private val project: Project,
-    private val rootFiles: List<PsiJavaFile>,
-    private val dependencyGraph: Map<PsiJavaFile, List<PsiJavaFile>>
+    private val rootFiles: List<PsiFile>,
+    private val dependencyGraph: Map<PsiFile, List<PsiFile>>
 ) : DialogWrapper(project, false) {
 
     private val disabledNodes = mutableSetOf<String>()
-    private val fileToId = mutableMapOf<PsiJavaFile, String>()
+    private val fileToId = mutableMapOf<PsiFile, String>()
     private val objectMapper = jacksonObjectMapper()
 
     companion object {
@@ -116,7 +116,7 @@ class DependenciesDialog(
 
     private fun assignFileIds() {
         var idCounter = 1
-        fun getId(file: PsiJavaFile) = fileToId.getOrPut(file) { "node_${idCounter++}" }
+        fun getId(file: PsiFile) = fileToId.getOrPut(file) { "node_${idCounter++}" }
 
         rootFiles.forEach(::getId)  // Assign IDs to all root files
         dependencyGraph.keys.forEach(::getId)
@@ -203,13 +203,13 @@ class DependenciesDialog(
         CopyPasteManager.getInstance().setContents(StringSelection(prompt.trim()))
     }
 
-    private fun getEnabledFiles(): List<PsiJavaFile> {
+    private fun getEnabledFiles(): List<PsiFile> {
         return fileToId.entries
             .filterNot { disabledNodes.contains(it.value) }
             .map { it.key }
     }
 
-    private fun buildAiPrompt(files: List<PsiJavaFile>): String {
+    private fun buildAiPrompt(files: List<PsiFile>): String {
         return buildString {
             appendLine(CodeGraphBundle.message("button.aiPromptToClipboard.prompt"))
             files.forEach { file ->
@@ -218,7 +218,7 @@ class DependenciesDialog(
         }
     }
 
-    private fun getRelativePath(file: PsiJavaFile): String {
+    private fun getRelativePath(file: PsiFile): String {
         val vFile = file.virtualFile
         return vFile?.let {
             project.basePath.let { base ->

@@ -6,6 +6,7 @@
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>  <!-- Java support added here -->
+    <depends>org.jetbrains.kotlin</depends>  <!-- Added Kotlin plugin dependency for Kotlin PSI support -->
 
     <resource-bundle>messages.CodeGraphBundle</resource-bundle>
 
