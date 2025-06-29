@@ -88,6 +88,26 @@ provides a visual representation of the dependencies, enabling users to explore 
 - Fork the repository and create a new branch.
 - Submit a pull request with detailed explanations.
 
+### Release Process
+
+To release a new version of CodeGraph:
+
+1. **Update the version:**
+    - Change the `pluginVersion` property in the `gradle.properties` file to the desired new version.
+2. **Update the changelog:**
+    - List all changes for the new version under the `## [Unreleased]` section in `CHANGELOG.md`.
+3. **Merge to main:**
+    - Merge your changes into the `main` branch.
+4. **Draft release:**
+    - A pipeline will automatically create a draft release on GitHub.
+5. **Publish the release:**
+    - Publish the draft release on GitHub. This will trigger a CI pipeline that:
+        - Publishes the plugin to the JetBrains Marketplace.
+        - Automatically updates the `CHANGELOG.md` file.
+
+No manual upload to the Marketplace is required; the process is fully automated after publishing the GitHub release
+draft.
+
 ---
 
 ## License
