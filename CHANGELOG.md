@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-06-29
+
 ### Added
 
 - Support for selecting and analyzing Kotlin files in addition to Java files.
@@ -38,8 +40,7 @@
 - Initial scaffold created
   from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intelliJ-platform-plugin-template)
 
-[Unreleased]: https://github.com/sisimomo/CodeGraph/compare/v0.1.0...HEAD
-
+[Unreleased]: https://github.com/sisimomo/CodeGraph/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/sisimomo/CodeGraph/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/sisimomo/CodeGraph/compare/v0.0.1...v0.1.0
-
 [0.0.1]: https://github.com/sisimomo/CodeGraph/commits/v0.0.1
