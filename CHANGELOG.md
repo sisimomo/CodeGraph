@@ -6,8 +6,15 @@
 
 ### Added
 
+- Support for selecting and analyzing Kotlin files in addition to Java files.
 - New "Copy AI Agent Context Prompt" action to copy relative file paths instead of file content.
 - File paths in clipboard content are now shown as project-relative instead of just filenames.
+
+### Changed
+
+- Dependency collection is now more intelligent: instead of relying only on import statements, the plugin analyzes
+  actual code references within Java and Kotlin files using PSI traversal. This results in a more accurate and
+  comprehensive dependency graph that reflects better file relationships and usages.
 
 ## [0.1.0] - 2025-02-19
 
@@ -29,7 +36,7 @@
 
 - Initial version
 - Initial scaffold created
-  from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
+  from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intelliJ-platform-plugin-template)
 
 [Unreleased]: https://github.com/sisimomo/CodeGraph/compare/v0.1.0...HEAD
 

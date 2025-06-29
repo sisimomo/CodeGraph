@@ -6,13 +6,13 @@
 
 <!-- Plugin description -->
 
-This IntelliJ plugin generates an **interactive dependency graph** for a selected Java file, allowing users to **filter
-dependencies** based on a specified package and **concatenate selected files** into the clipboard. The plugin provides a
-visual representation of the dependencies, enabling users to explore and manipulate them interactively.
+This IntelliJ plugin generates an **interactive dependency graph** for selected Java or Kotlin files, allowing users to
+**filter dependencies** based on a specified package and **concatenate selected files** into the clipboard. The plugin
+provides a visual representation of the dependencies, enabling users to explore and manipulate them interactively.
 
 ## Usage
 
-1. **Select one or multiples Java file** in IntelliJ IDEA project side panel.
+1. **Select one or multiple Java or Kotlin files** in the IntelliJ IDEA project side panel.
 2. **Invoke the plugin** using the configured shortcut (default <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>G</kbd>).
     - Or use the Command Palette (Find Action, <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd>) then type <kbd>
       CodeGraph - Show Dependencies</kbd>.
