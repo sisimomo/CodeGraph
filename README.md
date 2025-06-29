@@ -59,7 +59,7 @@ visual representation of the dependencies, enabling users to explore and manipul
 ### Prerequisites
 
 - **IntelliJ IDEA Plugin SDK**
-- **Java 17+**
+- **Java 21+**
 - **Gradle (for build automation)**
 
 ### Building the Plugin
