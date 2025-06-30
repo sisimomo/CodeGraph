@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.2.1] - 2025-06-30
+
 ### Fixed
 
 - Explicitly declare compatibility with Kotlin K2 mode by adding to resolve plugin incompatibility warning.
@@ -44,10 +46,8 @@
 - Initial scaffold created
   from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intelliJ-platform-plugin-template)
 
-[Unreleased]: https://github.com/sisimomo/CodeGraph/compare/v0.2.0...HEAD
-
+[Unreleased]: https://github.com/sisimomo/CodeGraph/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/sisimomo/CodeGraph/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/sisimomo/CodeGraph/compare/v0.1.0...v0.2.0
-
 [0.1.0]: https://github.com/sisimomo/CodeGraph/compare/v0.0.1...v0.1.0
-
 [0.0.1]: https://github.com/sisimomo/CodeGraph/commits/v0.0.1
